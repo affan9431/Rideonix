@@ -1,6 +1,6 @@
 # 🚖 Rideonix - Full Stack Ride Booking App
 
-RideOnEx is a ride-booking web application that connects riders with nearby drivers. It features real-time location updates, OTP-based login, secure ride handling, and a built-in review system.
+Rideonix is a ride-booking web application that connects riders with nearby drivers. It features real-time location updates, OTP-based login, secure ride handling, and a built-in review system.
 
 ---
 
