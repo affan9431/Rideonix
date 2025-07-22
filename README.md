@@ -41,10 +41,8 @@ RideOnEx is a ride-booking web application that connects riders with nearby driv
 ### 🔧 Backend Setup (Flask)
 ```bash
 cd back-end
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-flask run
+npm install
+npm start
 ```
 
 ### 🔧 Frontend Setup (React + Vite)
