@@ -21,7 +21,6 @@ RideOnEx is a ride-booking web application that connects riders with nearby driv
 - Socket.io
 - JWT for auth
 - Fast2SMS (for OTP)
-- Multer (for image uploads)
 - Bcrypt (for hashing)
 - CORS
 
