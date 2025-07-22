@@ -6,7 +6,6 @@ import getDriverInfo from "../utils/getDriverData";
 import getRiderInfo from "../utils/getRiderData";
 import { LogOut, User, History, HelpCircle } from "lucide-react";
 import { jwtDecode } from "jwt-decode";
-import useDarkMode from "../hooks/useDarkMode";
 import toast from "react-hot-toast";
 
 const riderToken = localStorage.getItem("riderToken");
@@ -22,8 +21,6 @@ const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeRole, setActiveRole] = useState(storedRole);
-  const { darkMode, setDarkMode } = useDarkMode();
-
   useEffect(() => {
     const fetchData = async () => {
       const driverData = driverToken && (await getDriverInfo());
@@ -105,13 +102,6 @@ const Navbar = () => {
 
       {/* Right Section */}
       <div className="hidden md:flex items-center gap-6 text-sm font-medium">
-        <div className="flex items-center gap-1 cursor-pointer">
-          {darkMode ? (
-            <Sun onClick={() => setDarkMode(!darkMode)} />
-          ) : (
-            <Moon onClick={() => setDarkMode(!darkMode)} />
-          )}
-        </div>
         <div className="flex items-center gap-1 cursor-pointer">
           <Globe size={16} />
           EN

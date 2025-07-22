@@ -1,5 +1,3 @@
-import useDarkMode from "../hooks/useDarkMode";
-
 const suggestionData = [
   {
     title: "Ride",
@@ -24,12 +22,8 @@ const suggestionData = [
 ];
 
 const Suggestions = () => {
-  const { darkMode } = useDarkMode();
-
   return (
-    <div
-      className={`px-6 py-12 ${darkMode ? "bg-black text-white" : "bg-white"} `}
-    >
+    <div className={`px-6 py-12 bg-white`}>
       <h2 className="text-3xl font-bold mb-8">Suggestions</h2>
 
       <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -50,9 +44,8 @@ const Suggestions = () => {
 
             <div className="mt-4 flex justify-between items-end">
               <button
-                className={`${
-                  darkMode ? "bg-white text-black" : "bg-black text-white"
-                } px-5 py-2 rounded-full text-sm font-medium shadow-sm hover:bg-gray-200 transition`}
+                className={`bg-black text-white
+                 px-5 py-2 rounded-full text-sm font-medium shadow-sm hover:bg-gray-200 transition`}
               >
                 Details
               </button>

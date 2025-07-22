@@ -31,89 +31,79 @@ import DriverProfile from "./component/DriverProfile";
 import RiderProfile from "./component/RIderProfile";
 import RiderHelpPage from "./pages/RiderHelpPage";
 import RiderRideHistory from "./pages/RiderRideHistory";
-import DarkModeProvider from "./context/DarkModeProvider";
 import DriverPerformance from "./component/DriverPerformance";
 import QRUPIPayment from "./component/QRUPIPayment";
 import { Toaster } from "react-hot-toast";
 
-
 function App() {
   return (
-    <DarkModeProvider>
-      <LocationProvider>
-        <OnboardingProvider>
-          <Router>
-            <Routes>
-              <Route path="/" element={<Navigate replace to="/app/home" />} />{" "}
-              <Route path="app" element={<AppLayout />}>
-                <Route index element={<Navigate replace to="home" />} />
-                <Route path="home" element={<Home />} />
-                <Route path="drive" element={<Drive />} />
-                <Route path="rider-profile" element={<RiderProfile />} />
-                <Route path="help" element={<RiderHelpPage />} />
-                <Route path="ride-history" element={<RiderRideHistory />} />
+    <LocationProvider>
+      <OnboardingProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Navigate replace to="/app/home" />} />{" "}
+            <Route path="app" element={<AppLayout />}>
+              <Route index element={<Navigate replace to="home" />} />
+              <Route path="home" element={<Home />} />
+              <Route path="drive" element={<Drive />} />
+              <Route path="rider-profile" element={<RiderProfile />} />
+              <Route path="help" element={<RiderHelpPage />} />
+              <Route path="ride-history" element={<RiderRideHistory />} />
+            </Route>
+            <Route path="register" element={<Registeration />} />
+            <Route path="otp-verification" element={<OTPVerification />} />{" "}
+            <Route path="register/name" element={<RegisterName />} />
+            <Route path="register/email" element={<RegisterEmail />} />
+            <Route path="term-and-conditions" element={<TermAndCondition />} />
+            <Route path="location-referral" element={<LocationReferral />} />
+            <Route path="select-vehicle" element={<SelectVehicleType />} />
+            <Route path="select-language" element={<SelectLanguage />} />
+            <Route path="documents" element={<WelcomeUpload />} />
+            <Route path="ride" element={<RiderProtectedRoute />}>
+              <Route path="" element={<RideAndMap />}>
+                <Route index element={<Navigate replace to="location" />} />
+                <Route path="location" element={<GetLocationForm />} />
+                <Route
+                  path="vehicle-selection"
+                  element={<RideTypeSelector />}
+                />
+                <Route path="ride-accept" element={<DriverOnTheWay />} />
               </Route>
-              <Route path="register" element={<Registeration />} />
-              <Route
-                path="otp-verification"
-                element={<OTPVerification />}
-              />{" "}
-              <Route path="register/name" element={<RegisterName />} />
-              <Route path="register/email" element={<RegisterEmail />} />
-              <Route
-                path="term-and-conditions"
-                element={<TermAndCondition />}
-              />
-              <Route path="location-referral" element={<LocationReferral />} />
-              <Route path="select-vehicle" element={<SelectVehicleType />} />
-              <Route path="select-language" element={<SelectLanguage />} />
-              <Route path="documents" element={<WelcomeUpload />} />
-              <Route path="ride" element={<RiderProtectedRoute />}>
-                <Route path="" element={<RideAndMap />}>
-                  <Route index element={<Navigate replace to="location" />} />
-                  <Route path="location" element={<GetLocationForm />} />
-                  <Route
-                    path="vehicle-selection"
-                    element={<RideTypeSelector />}
-                  />
-                  <Route path="ride-accept" element={<DriverOnTheWay />} />
-                </Route>
+            </Route>
+            <Route path="driver" element={<DriverProtectedRoute />}>
+              <Route path="" element={<DriverDashboard />}>
+                <Route index element={<Navigate replace to="info" />} />
+                <Route path="info" element={<CarCard />} />
+                <Route path="on-the-way" element={<RideDetailsToDriver />} />
+                <Route path="profile" element={<DriverProfile />} />
+                <Route path="performance" element={<DriverPerformance />} />
               </Route>
-              <Route path="driver" element={<DriverProtectedRoute />}>
-                <Route path="" element={<DriverDashboard />}>
-                  <Route index element={<Navigate replace to="info" />} />
-                  <Route path="info" element={<CarCard />} />
-                  <Route path="on-the-way" element={<RideDetailsToDriver />} />
-                  <Route path="profile" element={<DriverProfile />} />
-                  <Route path="performance" element={<DriverPerformance />} />
-                </Route>
-              </Route>
-              <Route path="qr-code" element={<QRUPIPayment />} />
-            </Routes>
-          </Router>
-          <Toaster
-            position="top-center"
-            gutter={12}
-            containerStyle={{ margin: "8px" }}
-            toastOptions={{
-              success: {
-                duration: 3000,
-              },
-              error: {
-                duration: 5000,
-              },
-              style: {
-                fontSize: "16px",
-                maxWidth: "500px",
-                padding: "16px 24px",
-                backgroundColor: "black",
-                color: "white",
-              },
-            }}
-          />
-        </OnboardingProvider>
-      </LocationProvider>
-    </DarkModeProvider>
+            </Route>
+            <Route path="qr-code" element={<QRUPIPayment />} />
+          </Routes>
+        </Router>
+        <Toaster
+          position="top-center"
+          gutter={12}
+          containerStyle={{ margin: "8px" }}
+          toastOptions={{
+            success: {
+              duration: 3000,
+            },
+            error: {
+              duration: 5000,
+            },
+            style: {
+              fontSize: "16px",
+              maxWidth: "500px",
+              padding: "16px 24px",
+              backgroundColor: "black",
+              color: "white",
+            },
+          }}
+        />
+      </OnboardingProvider>
+    </LocationProvider>
   );
 }
 

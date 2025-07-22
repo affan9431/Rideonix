@@ -1,14 +1,10 @@
 import toast from "react-hot-toast";
-import useDarkMode from "../hooks/useDarkMode";
 
 const RentOutSection = () => {
-  const { darkMode } = useDarkMode();
 
   return (
     <section
-      className={`flex flex-col lg:flex-row items-center justify-between px-6 py-16 max-w-7xl mx-auto gap-10 ${
-        darkMode ? "bg-black text-white" : "bg-white"
-      }`}
+      className={`flex flex-col lg:flex-row items-center justify-between px-6 py-16 max-w-7xl mx-auto gap-10 bg-white`}
     >
       {/* Left Content */}
       <div className="flex-1">
@@ -25,9 +21,7 @@ const RentOutSection = () => {
               icon: "🚧",
             })
           }
-          className={`${
-            darkMode ? "bg-white text-black" : "bg-black text-white"
-          } px-6 py-3 rounded-md text-base font-semibold hover:bg-gray-900 transition cursor-pointer`}
+          className={`bg-black text-white px-6 py-3 rounded-md text-base font-semibold hover:bg-gray-900 transition cursor-pointer`}
         >
           Get started
         </button>

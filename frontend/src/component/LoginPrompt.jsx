@@ -1,15 +1,12 @@
 import { Link } from "react-router-dom";
-import useDarkMode from "../hooks/useDarkMode";
 
 const LoginPrompt = () => {
   const riderToken = localStorage.getItem("riderToken");
-  const { darkMode } = useDarkMode();
 
   return (
     <section
-      className={`flex flex-col md:flex-row items-center justify-between px-4 sm:px-8 md:px-16 lg:px-24 py-12 md:py-20 gap-10 ${
-        darkMode ? "bg-black text-white" : "bg-white text-black"
-      }`}
+      className={`flex flex-col md:flex-row items-center justify-between px-4 sm:px-8 md:px-16 lg:px-24 py-12 md:py-20 gap-10 bg-white text-black
+      `}
     >
       {/* Left Side - Text */}
       <div className="md:w-1/2 text-center md:text-left">
@@ -23,11 +20,7 @@ const LoginPrompt = () => {
 
         <Link
           to={riderToken ? "/app/ride-history" : "/register"}
-          className={`inline-block font-semibold px-6 py-3 rounded-md transition ${
-            darkMode
-              ? "bg-white text-black hover:bg-gray-300"
-              : "bg-black text-white hover:bg-gray-900"
-          }`}
+          className={`inline-block font-semibold px-6 py-3 rounded-md transition bg-black text-white`}
         >
           {!riderToken ? "Log in to your account" : "Go to your activity"}
         </Link>
