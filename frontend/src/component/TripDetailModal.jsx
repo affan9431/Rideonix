@@ -3,7 +3,6 @@ import { Dialog } from "@headlessui/react";
 
 export default function TripDetailModal({ isOpen, onClose, data }) {
   if (!data) return null;
-  console.log(data);
 
   return (
     <Dialog open={isOpen} onClose={onClose} className="relative z-[1000]">

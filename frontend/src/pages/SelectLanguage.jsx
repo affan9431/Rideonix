@@ -33,7 +33,6 @@ export default function SelectLanguage() {
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState(null);
   const { driverData, setDriverData } = useOnboarding();
-  console.log(driverData);
   const navigate = useNavigate();
 
   const filtered = languages.filter((lang) =>

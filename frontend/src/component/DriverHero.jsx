@@ -4,8 +4,7 @@ import { jwtDecode } from "jwt-decode";
 
 const riderToken = localStorage.getItem("riderToken");
 
-const decode = riderToken && jwtDecode(riderToken);
-console.log(decode);
+const decoded = riderToken && jwtDecode(riderToken);
 
 export default function DriverHero() {
   const { setDriverState } = useOnboarding();

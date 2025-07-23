@@ -17,13 +17,11 @@ function OTPVerification() {
 
   const handleNext = async () => {
     const otpCode = Number(otp.join(""));
-    console.log("otpcode:", otpCode);
     const res = await axios.post("http://localhost:3000/api/auth/verify-otp", {
       identifier,
       otpCode,
     });
 
-    console.log(res);
     if (res.data.alreadyRegistered === false) {
       navigate("/register/name", {
         state: {

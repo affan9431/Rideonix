@@ -52,7 +52,6 @@ export default function DriverPerformance() {
     fetchHistory();
   }, []);
 
-  console.log(rideHistory);
 
   const totalEarning = rideHistory.reduce((sum, ride) => {
     return sum + parseFloat(ride.price || 0);

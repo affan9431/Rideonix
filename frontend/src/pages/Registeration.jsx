@@ -8,12 +8,10 @@ const Registeration = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
-    console.log("DONE");
     const res = await axios.post("http://localhost:3000/api/auth/send-otp", {
       identifier,
     });
 
-    console.log(res.data.otp);
     navigate("/otp-verification", {
       state: {
         otp: res.data.otp,

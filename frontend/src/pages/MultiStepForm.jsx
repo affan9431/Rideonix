@@ -6,7 +6,6 @@ export default function MultiStepForm() {
   const [currentStep, setCurrentStep] = useState(1);
   const location = useLocation();
   const { identifier, otp } = location.state || {};
-  console.log(identifier, otp);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -35,12 +34,10 @@ export default function MultiStepForm() {
   };
 
   const handleSubmit = async () => {
-    const res = await axios.post("http://localhost:3000/api/user/verify-otp", {
+    await axios.post("http://localhost:3000/api/user/verify-otp", {
       identifier,
       otp,
     });
-
-    console.log(res);
   };
 
   const renderStep = () => {

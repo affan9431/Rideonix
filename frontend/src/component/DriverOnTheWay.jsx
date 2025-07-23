@@ -76,7 +76,6 @@ export default function DriverOnTheWay() {
     socket.on("ride_finished_on_rider", () => {
       localStorage.removeItem("driverData");
       localStorage.removeItem("OTP");
-      console.log("Ride end");
     });
   }, []);
 

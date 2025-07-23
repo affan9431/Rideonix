@@ -81,7 +81,6 @@ export default function DriverProfile() {
         .from("profile-image") // ⛳ Replace with your Supabase bucket
         .upload(fileName, newImageFile);
 
-      console.log("PATH:", data);
 
       if (error) {
         console.error("Image upload failed", error);
@@ -92,7 +91,6 @@ export default function DriverProfile() {
         .from("profile-image")
         .getPublicUrl(data.path);
 
-      console.log("publicUrl:", publicURLData.publicUrl);
 
       uploadedImageUrl = publicURLData.publicUrl;
     }
@@ -101,8 +99,6 @@ export default function DriverProfile() {
       ...formData,
       profilePicture: uploadedImageUrl,
     };
-
-    console.log("Final Data to Send: ", finalData);
 
     try {
       await axios.patch(

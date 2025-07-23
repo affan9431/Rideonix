@@ -107,9 +107,7 @@ export default function RideTypeSelector() {
   const requestRide = () => {
     const riderToken = localStorage.getItem("riderToken");
     const decoded = riderToken && jwtDecode(riderToken);
-    console.log(decoded);
 
-    console.log("ride request");
 
     if (
       !position?.[0] ||
@@ -137,7 +135,6 @@ export default function RideTypeSelector() {
         riderPhoneNumber: decoded.phoneNumber,
       });
 
-      console.log("Done");
       setIsFindingDriver(true); // Show loading
     }
   };

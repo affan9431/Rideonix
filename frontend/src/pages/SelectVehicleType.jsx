@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 export default function SelectVehicleType() {
   const [selectedOption, setSelectedOption] = useState("");
   const { driverData, setDriverData } = useOnboarding();
-  console.log(driverData);
   const navigate = useNavigate();
 
   const options = [

@@ -28,26 +28,12 @@ const redIcon = new L.Icon({
 export default function RideBookingMap() {
   const { position, dropLocation, setPosition } = useLocation();
 
-  // useEffect(() => {
-  //   const fetchRoute = async () => {
-  //     try {
-  //       const res = await axios.get(
-  //         `http://localhost:3000/api/route?start=75.812195,26.8621894&end=75.8739726,26.8028728`
-  //       );
-  //       console.log(res.data);
-  //     } catch (error) {
-  //       console.error("Frontend Error:", error);
-  //     }
-  //   };
 
-  //   fetchRoute();
-  // }, [position, dropLocation]);
 
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          console.log(position);
           const latitude = position.coords.latitude;
           const longitude = position.coords.longitude;
           setPosition([latitude, longitude]);

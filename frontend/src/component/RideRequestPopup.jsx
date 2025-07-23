@@ -36,7 +36,6 @@ export default function RideRequestPopup({
     handleClose();
   };
 
-  console.log(incomingRide);
 
   const handleReject = () => {
     // const riderToken = localStorage.getItem("riderToken");

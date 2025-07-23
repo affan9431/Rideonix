@@ -15,7 +15,6 @@ const DashBoardNavbar = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await getDriverInfo();
-      console.log("Asasda:", data);
       setProfileImage(data.profilePicture);
     };
     fetchData();

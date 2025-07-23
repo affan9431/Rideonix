@@ -30,51 +30,55 @@ function RideHistory() {
     fetchHistory();
   }, []);
 
-  
   const handleViewDetails = (trip) => {
     setSelectedTrip(trip);
     setIsModalOpen(true);
   };
 
-  if (historyData.length === 0) {
-    return <p>Loading...</p>;
-  }
   return (
     <>
       <div className="lg:col-span-3 bg-stone-950 text-white rounded-lg shadow-md p-6 space-y-4">
         <h2 className="text-xl font-bold mb-4">History</h2>
-        {historyData.map((trip) => {
-          const timeOfDay = getTimeOfDay(trip.createdAt);
-          return (
-            <div
-              key={trip.id}
-              className="flex items-center space-x-4 pb-4 border-b border-gray-700 last:border-b-0"
-            >
-              <img
-                src={imageMap[timeOfDay]}
-                alt={`Trip at ${timeOfDay}`}
-                
-                className="rounded-[50px] object-cover w-[6vw] h-[6vh]"
-              />
-              <div className="flex-grow overflow-hidden">
-                <p className="text-sm truncate whitespace-nowrap overflow-hidden text-ellipsis">
-                  From: {trip.rider.pickUpLocationName}
-                </p>
-                <p className="text-sm truncate whitespace-nowrap overflow-hidden text-ellipsis">
-                  To: {trip.rider.dropLocationName}
-                </p>
-                <StarRating rating={trip.rating || 4} />
-              </div>
+        <div>
+          {historyData.length === 0 ? (
+            <p className="text-sm text-gray-400 italic">
+              No past trips yet — your journey history will appear here once you
+              take a ride.
+            </p>
+          ) : (
+            historyData.map((trip) => {
+              const timeOfDay = getTimeOfDay(trip.createdAt);
+              return (
+                <div
+                  key={trip.id}
+                  className="flex items-center space-x-4 pb-4 border-b border-gray-700 last:border-b-0"
+                >
+                  <img
+                    src={imageMap[timeOfDay]}
+                    alt={`Trip at ${timeOfDay}`}
+                    className="rounded-[50px] object-cover w-[6vw] h-[6vh]"
+                  />
+                  <div className="flex-grow overflow-hidden">
+                    <p className="text-sm truncate whitespace-nowrap overflow-hidden text-ellipsis">
+                      From: {trip.rider.pickUpLocationName}
+                    </p>
+                    <p className="text-sm truncate whitespace-nowrap overflow-hidden text-ellipsis">
+                      To: {trip.rider.dropLocationName}
+                    </p>
+                    <StarRating rating={trip.rating || 4} />
+                  </div>
 
-              <button
-                onClick={() => handleViewDetails(trip)}
-                className="text-sm text-blue-400 hover:underline"
-              >
-                View Details
-              </button>
-            </div>
-          );
-        })}
+                  <button
+                    onClick={() => handleViewDetails(trip)}
+                    className="text-sm text-blue-400 hover:underline"
+                  >
+                    View Details
+                  </button>
+                </div>
+              );
+            })
+          )}
+        </div>
       </div>
 
       <TripDetailModal

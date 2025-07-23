@@ -12,7 +12,6 @@ function TermAndCondition() {
   const location = useLocation();
   const { username, email, phoneNumber } = location.state || {};
   const { driverState, driverData } = useOnboarding();
-  console.log(driverData);
 
   const navigate = useNavigate();
   const handleInputChange = (field, value) => {

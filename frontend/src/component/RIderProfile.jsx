@@ -74,7 +74,6 @@ export default function RiderProfile() {
         .from("profile-image") // ⛳ Replace with your Supabase bucket
         .upload(fileName, newImageFile);
 
-      console.log("PATH:", data);
 
       if (error) {
         console.error("Image upload failed", error);
@@ -85,7 +84,6 @@ export default function RiderProfile() {
         .from("profile-image")
         .getPublicUrl(data.path);
 
-      console.log("publicUrl:", publicURLData.publicUrl);
 
       uploadedImageUrl = publicURLData.publicUrl;
     }
@@ -94,8 +92,6 @@ export default function RiderProfile() {
       ...formData,
       profilePicture: uploadedImageUrl,
     };
-
-    console.log("Final Data to Send: ", finalData);
 
     try {
       await axios.patch(
@@ -108,8 +104,7 @@ export default function RiderProfile() {
     }
   };
 
-  console.log(formData);
-  console.log(imagePreview);
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-white px-4 py-8">
       <form onSubmit={handleSubmit} className="w-full max-w-4xl">

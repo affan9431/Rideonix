@@ -42,7 +42,6 @@ export default function UberDashboard() {
   const location = useLocation();
   const hideMapRoutes = ["/driver/profile", "/driver/performance"];
   const shouldHideMap = hideMapRoutes.includes(location.pathname);
-  console.log(shouldHideMap);
 
   const [address, setAddress] = useState({
     cityName: "",
@@ -64,7 +63,6 @@ export default function UberDashboard() {
     );
 
     const data = await response.json();
-    console.log(data.address.city || data.address.town || data.address.village);
     setAddress({
       cityName: data.address.city,
       state: data.address.state,
@@ -121,7 +119,6 @@ export default function UberDashboard() {
 
   useEffect(() => {
     const handleRideRequest = (data) => {
-      console.log("🛎️ New Ride Request:", data);
       setIncomingRide(data);
       setShowRidePopup(true);
     };
@@ -136,7 +133,6 @@ export default function UberDashboard() {
 
   useEffect(() => {
     socket.on("ride_assigned", (data) => {
-      console.log("📦 Ride Assigned:", data);
       localStorage.setItem("rideData", JSON.stringify(data.rideData));
       navigate("/driver/on-the-way");
     });
