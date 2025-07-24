@@ -58,9 +58,7 @@ export default function UberDashboard() {
   });
 
   const getCityName = async (lat, lon) => {
-    const response = await fetch(
-      `http://localhost:3000/get-city?lat=${lat}&lon=${lon}`
-    );
+    const response = await fetch(`/get-city?lat=${lat}&lon=${lon}`);
 
     const data = await response.json();
     setAddress({
@@ -96,9 +94,7 @@ export default function UberDashboard() {
     const driverToken = localStorage.getItem("driverToken");
     const decoded = driverToken && jwtDecode(driverToken);
     const fetchDriverData = async () => {
-      const res = await axios.get(
-        `http://localhost:3000/api/driver/${decoded.id}`
-      );
+      const res = await axios.get(`/api/driver/${decoded.id}`);
 
       const requiredData = {
         driverId: res.data.data._id,

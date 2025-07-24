@@ -23,7 +23,7 @@ function TermAndCondition() {
 
   const handleNext = async () => {
     if (driverState === false) {
-      const res = await axios.post("http://localhost:3000/api/rider", {
+      const res = await axios.post("/api/rider", {
         username,
         email,
         phoneNumber,

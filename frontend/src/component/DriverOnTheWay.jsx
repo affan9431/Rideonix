@@ -106,10 +106,7 @@ export default function DriverOnTheWay() {
       };
 
       // Make the POST request
-      const response = await axios.post(
-        "http://localhost:3000/api/review",
-        payload
-      );
+      const response = await axios.post("/api/review", payload);
 
       // Handle success
       toast.success("Review submitted successfully:");

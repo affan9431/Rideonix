@@ -46,12 +46,11 @@ export default function DriverPerformance() {
 
   useEffect(() => {
     const fetchHistory = async () => {
-      const res = await axios.get("http://localhost:3000/api/rideHistory");
+      const res = await axios.get("/api/rideHistory");
       setRideHistory(res.data.data);
     };
     fetchHistory();
   }, []);
-
 
   const totalEarning = rideHistory.reduce((sum, ride) => {
     return sum + parseFloat(ride.price || 0);

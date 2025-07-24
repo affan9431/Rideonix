@@ -17,7 +17,7 @@ function OTPVerification() {
 
   const handleNext = async () => {
     const otpCode = Number(otp.join(""));
-    const res = await axios.post("http://localhost:3000/api/auth/verify-otp", {
+    const res = await axios.post("/api/auth/verify-otp", {
       identifier,
       otpCode,
     });

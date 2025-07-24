@@ -63,7 +63,9 @@ export default function WelcomeUpload() {
   const handleNext = async () => {
     const { drivingLicense, profilePicture, aadhaarCard, rc } = driverData;
     if (!drivingLicense || !profilePicture || !aadhaarCard || !rc) {
-      toast.error("Please upload all the required documents before proceeding.");
+      toast.error(
+        "Please upload all the required documents before proceeding."
+      );
       return;
     }
 
@@ -91,10 +93,7 @@ export default function WelcomeUpload() {
       };
 
       setDriverData(updatedData);
-      const res = await axios.post(
-        "http://localhost:3000/api/driver",
-        updatedData
-      );
+      const res = await axios.post("/api/driver", updatedData);
       localStorage.removeItem("activeRole");
       localStorage.setItem("driverToken", res.data.token);
       localStorage.setItem("activeRole", "driver");

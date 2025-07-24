@@ -34,7 +34,7 @@ export default function MultiStepForm() {
   };
 
   const handleSubmit = async () => {
-    await axios.post("http://localhost:3000/api/user/verify-otp", {
+    await axios.post("/api/user/verify-otp", {
       identifier,
       otp,
     });

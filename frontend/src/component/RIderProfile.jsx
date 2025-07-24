@@ -21,9 +21,7 @@ export default function RiderProfile() {
   useEffect(() => {
     const fetchDriverData = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:3000/api/rider/${decoded.id}`
-        );
+        const res = await axios.get(`/api/rider/${decoded.id}`);
 
         const { username, email, phoneNumber, profilePicture } = res.data.data;
 
@@ -74,7 +72,6 @@ export default function RiderProfile() {
         .from("profile-image") // ⛳ Replace with your Supabase bucket
         .upload(fileName, newImageFile);
 
-
       if (error) {
         console.error("Image upload failed", error);
         return;
@@ -83,7 +80,6 @@ export default function RiderProfile() {
       const { data: publicURLData } = supabase.storage
         .from("profile-image")
         .getPublicUrl(data.path);
-
 
       uploadedImageUrl = publicURLData.publicUrl;
     }
@@ -94,16 +90,12 @@ export default function RiderProfile() {
     };
 
     try {
-      await axios.patch(
-        `http://localhost:3000/api/rider/${decoded.id}`,
-        finalData
-      );
+      await axios.patch(`/api/rider/${decoded.id}`, finalData);
       toast.success("Profile updated successfully!");
     } catch (err) {
       console.error("Error updating profile:", err);
     }
   };
-
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white px-4 py-8">
