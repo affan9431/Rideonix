@@ -28,8 +28,8 @@ const Navbar = () => {
 
       setProfileImage(
         activeRole === "driver"
-          ? driverData.profilePicture
-          : riderData.profilePicture
+          ? driverData?.profilePicture
+          : riderData?.profilePicture
       );
     };
     fetchData();
