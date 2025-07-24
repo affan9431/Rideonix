@@ -23,7 +23,7 @@ function TermAndCondition() {
 
   const handleNext = async () => {
     if (driverState === false) {
-      const res = await axios.post("/api/rider", {
+      const res = await axios.post("https://rideonix-backend.onrender.com/api/rider", {
         username,
         email,
         phoneNumber,

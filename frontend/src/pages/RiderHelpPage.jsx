@@ -24,7 +24,7 @@ export default function RiderHelpPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/api/contact", formData);
+      const res = await axios.post("https://rideonix-backend.onrender.com/api/contact", formData);
       if (res.data.success === "success") {
         toast.success("Form submitted successfully!");
         setFormData({ name: "", email: "", issues: "", message: "" });

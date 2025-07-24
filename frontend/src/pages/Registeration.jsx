@@ -8,7 +8,7 @@ const Registeration = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
-    const res = await axios.post("/api/auth/send-otp", {
+    const res = await axios.post("https://rideonix-backend.onrender.com/api/auth/send-otp", {
       identifier,
     });
 

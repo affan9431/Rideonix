@@ -34,7 +34,7 @@ export default function MultiStepForm() {
   };
 
   const handleSubmit = async () => {
-    await axios.post("/api/user/verify-otp", {
+    await axios.post("https://rideonix-backend.onrender.com/api/user/verify-otp", {
       identifier,
       otp,
     });

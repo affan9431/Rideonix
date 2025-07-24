@@ -94,7 +94,7 @@ export default function UberDashboard() {
     const driverToken = localStorage.getItem("driverToken");
     const decoded = driverToken && jwtDecode(driverToken);
     const fetchDriverData = async () => {
-      const res = await axios.get(`/api/driver/${decoded.id}`);
+      const res = await axios.get(`https://rideonix-backend.onrender.com/api/driver/${decoded.id}`);
 
       const requiredData = {
         driverId: res.data.data._id,

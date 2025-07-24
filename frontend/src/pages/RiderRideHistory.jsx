@@ -22,7 +22,7 @@ export default function RiderRideHistory() {
   useEffect(() => {
     const fetchRideHistory = async () => {
       try {
-        const res = await axios.get("/api/rideHistory");
+        const res = await axios.get("https://rideonix-backend.onrender.com/api/rideHistory");
         if (res.data.status === "success") {
           setRideHistory(res.data.data);
         } else {

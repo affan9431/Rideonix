@@ -106,7 +106,7 @@ export default function DriverOnTheWay() {
       };
 
       // Make the POST request
-      const response = await axios.post("/api/review", payload);
+      const response = await axios.post("https://rideonix-backend.onrender.com/api/review", payload);
 
       // Handle success
       toast.success("Review submitted successfully:");

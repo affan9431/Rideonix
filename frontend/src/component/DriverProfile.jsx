@@ -23,7 +23,7 @@ export default function DriverProfile() {
   useEffect(() => {
     const fetchDriverData = async () => {
       try {
-        const res = await axios.get(`/api/driver/${decoded.id}`);
+        const res = await axios.get(`https://rideonix-backend.onrender.com/api/driver/${decoded.id}`);
 
         const {
           username,
@@ -97,7 +97,7 @@ export default function DriverProfile() {
     };
 
     try {
-      await axios.patch(`/api/driver/${decoded.id}`, finalData);
+      await axios.patch(`https://rideonix-backend.onrender.com/api/driver/${decoded.id}`, finalData);
       toast.success("Profile updated successfully!");
     } catch (err) {
       console.error("Error updating profile:", err);

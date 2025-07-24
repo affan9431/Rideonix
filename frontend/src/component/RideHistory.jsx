@@ -21,7 +21,7 @@ function RideHistory() {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const res = await axios.get("/api/rideHistory");
+        const res = await axios.get("https://rideonix-backend.onrender.com/api/rideHistory");
         setHistoryData(res.data.data);
       } catch (error) {
         console.log("ERROR:", error);

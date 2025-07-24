@@ -93,7 +93,7 @@ export default function WelcomeUpload() {
       };
 
       setDriverData(updatedData);
-      const res = await axios.post("/api/driver", updatedData);
+      const res = await axios.post("https://rideonix-backend.onrender.com/api/driver", updatedData);
       localStorage.removeItem("activeRole");
       localStorage.setItem("driverToken", res.data.token);
       localStorage.setItem("activeRole", "driver");

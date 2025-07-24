@@ -46,7 +46,7 @@ export default function DriverPerformance() {
 
   useEffect(() => {
     const fetchHistory = async () => {
-      const res = await axios.get("/api/rideHistory");
+      const res = await axios.get("https://rideonix-backend.onrender.com/api/rideHistory");
       setRideHistory(res.data.data);
     };
     fetchHistory();

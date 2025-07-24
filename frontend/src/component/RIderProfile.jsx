@@ -21,7 +21,7 @@ export default function RiderProfile() {
   useEffect(() => {
     const fetchDriverData = async () => {
       try {
-        const res = await axios.get(`/api/rider/${decoded.id}`);
+        const res = await axios.get(`https://rideonix-backend.onrender.com/api/rider/${decoded.id}`);
 
         const { username, email, phoneNumber, profilePicture } = res.data.data;
 
@@ -90,7 +90,7 @@ export default function RiderProfile() {
     };
 
     try {
-      await axios.patch(`/api/rider/${decoded.id}`, finalData);
+      await axios.patch(`https://rideonix-backend.onrender.com/api/rider/${decoded.id}`, finalData);
       toast.success("Profile updated successfully!");
     } catch (err) {
       console.error("Error updating profile:", err);
