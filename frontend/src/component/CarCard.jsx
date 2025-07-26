@@ -26,6 +26,8 @@ function CarCard() {
     fetchData();
   }, [driverToken]);
 
+  console.log("From card:", driverData);
+
   const selectedVehicle = driverData?.selectedVehicle?.replace("🏍️", "").trim(); // remove emoji if any
   const vehicle = vehicleInfo[selectedVehicle];
   const image = vehicleImages[selectedVehicle];
