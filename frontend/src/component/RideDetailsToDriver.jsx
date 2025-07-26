@@ -108,7 +108,7 @@ export default function RideDetailsToDriver() {
 
   const handlePaymentConfirm = () => {
     socket.emit("payment_done", {
-      riderid: rideData.riderId,
+      riderId: rideData.riderId,
     });
     localStorage.removeItem("rideData");
   };
