@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function PageNotFound() {
   return (
@@ -52,19 +53,12 @@ export default function PageNotFound() {
         </p>
         <p className="mt-4 text-lg md:text-xl before:content-['>_']">
           Please try to{" "}
-          <a
-            href="#"
-            className="text-white hover:underline before:content-['['] after:content-[']']"
-          >
-            go back
-          </a>{" "}
-          or{" "}
-          <a
-            href="#"
+          <Link
+            to="/app/home"
             className="text-white hover:underline before:content-['['] after:content-[']']"
           >
             return to the homepage
-          </a>
+          </Link>
           .
         </p>
         <p className="mt-4 text-lg md:text-xl before:content-['>_']">
