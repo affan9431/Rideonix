@@ -172,7 +172,10 @@ export default function RideDetailsToDriver() {
                   Generate Qr Code
                 </button>
                 <button
-                  onClick={() => navigate("/driver")}
+                  onClick={() => {
+                    handlePaymentConfirm();
+                    navigate("/driver");
+                  }}
                   className="bg-black text-white py-2 px-4 rounded-md hover:bg-slate-800 cursor-pointer"
                 >
                   Back to home
