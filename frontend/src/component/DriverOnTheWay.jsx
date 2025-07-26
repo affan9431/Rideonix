@@ -4,6 +4,8 @@ import { socket } from "../service/socket.io";
 import { jwtDecode } from "jwt-decode";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { FaStar } from "react-icons/fa";
+import useLocation from "../hooks/useLocation";
 
 export default function DriverOnTheWay() {
   const [driver, setDriver] = useState(null);
@@ -14,26 +16,18 @@ export default function DriverOnTheWay() {
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(null);
   const [reviewText, setReviewText] = useState("");
+  const [rideId, setRideId] = useState("");
+  const {
+    setPosition,
+    setDropLocation,
+    setPickUpLocationName,
+    setDropLocationName,
+  } = useLocation();
 
   useEffect(() => {
     const storedOtp = JSON.parse(localStorage.getItem("OTP"));
     setOtp(storedOtp);
   }, []);
-
-  const handleCancelRide = () => {
-    const riderToken = localStorage.getItem("riderToken");
-    const decoded = riderToken && jwtDecode(riderToken);
-
-    socket.emit("ride_canceled_by_rider", {
-      riderId: decoded.id,
-      driverId: driver && driver.driverId,
-      reason: "Canceled by rider",
-      timestamp: Date.now(),
-    });
-    localStorage.removeItem("driverData");
-    localStorage.removeItem("OTP");
-    navigate("/ride");
-  };
 
   useEffect(() => {
     const storedDriver = JSON.parse(localStorage.getItem("driverData"));
@@ -67,51 +61,70 @@ export default function DriverOnTheWay() {
       toast.success(
         "Ride completed! Thank you for riding with us. Have a great day! 🚗✨"
       );
-
       setShowReviewModal(true);
+      setPosition([]);
+      setDropLocation([]);
+      setPickUpLocationName("");
+      setDropLocationName("");
     });
-  }, [navigate]);
+  }, [
+    navigate,
+    setPosition,
+    setDropLocation,
+    setPickUpLocationName,
+    setDropLocationName,
+  ]);
 
   useEffect(() => {
-    socket.on("ride_finished_on_rider", () => {
+    socket.on("ride_finished_on_rider", (data) => {
       localStorage.removeItem("driverData");
       localStorage.removeItem("OTP");
+      setRideId(data.rideId);
     });
   }, []);
 
-  const submitReview = async (reviewText, rating) => {
-    try {
-      // Get the token from localStorage
-      const token = localStorage.getItem("riderToken");
+  const handleCancelRide = () => {
+    const riderToken = localStorage.getItem("riderToken");
+    const decoded = riderToken && jwtDecode(riderToken);
 
+    socket.emit("ride_canceled_by_rider", {
+      riderId: decoded.id,
+      driverId: driver && driver.driverId,
+      reason: "Canceled by rider",
+      timestamp: Date.now(),
+    });
+    localStorage.removeItem("driverData");
+    localStorage.removeItem("OTP");
+    navigate("/ride");
+  };
+
+  const submitReview = async () => {
+    try {
+      const token = localStorage.getItem("riderToken");
       if (!token) {
         console.error("No token found.");
         return;
       }
 
-      // Decode the token to get riderId
       const decoded = jwtDecode(token);
       const riderId = decoded.id || decoded._id;
-
       if (!riderId) {
         console.error("Invalid token structure. Rider ID missing.");
         return;
       }
 
-      // Prepare the payload
       const payload = {
-        ride: riderId, // Based on your schema, it's stored as `ride`
+        rideId,
+        ride: riderId,
         review: reviewText,
         rating: rating,
       };
 
-      // Make the POST request
       await axios.post(
         "https://rideonix-backend.onrender.com/api/review",
         payload
       );
 
-      // Handle success
       toast.success("Review submitted successfully:");
       navigate("/ride");
     } catch (error) {
@@ -178,73 +191,61 @@ export default function DriverOnTheWay() {
         </>
       )}
 
+      {/* ✨ Review card shown like a normal section (not overlay) */}
       {showReviewModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-xl w-[90%] max-w-md relative space-y-4">
+        <div className="bg-white p-6 rounded-xl shadow-xl space-y-4 mt-6">
+          <h3 className="text-xl font-bold text-center">How was your ride?</h3>
+
+          <div className="flex justify-center space-x-1">
+            {[...Array(5)].map((_, i) => {
+              const starValue = i + 1;
+              return (
+                <label key={i}>
+                  <input
+                    type="radio"
+                    name="rating"
+                    value={starValue}
+                    className="hidden"
+                    onClick={() => setRating(starValue)}
+                  />
+                  <FaStar
+                    size={30}
+                    color={
+                      starValue <= (hover || rating) ? "#ffc107" : "#e4e5e9"
+                    }
+                    className="cursor-pointer transition"
+                    onMouseEnter={() => setHover(starValue)}
+                    onMouseLeave={() => setHover(null)}
+                  />
+                </label>
+              );
+            })}
+          </div>
+
+          <textarea
+            rows="4"
+            placeholder="Write your review..."
+            value={reviewText}
+            onChange={(e) => setReviewText(e.target.value)}
+            className="w-full border border-gray-300 rounded-lg p-2"
+          ></textarea>
+
+          <div className="flex justify-end gap-4 mt-4">
             <button
               onClick={() => {
                 setShowReviewModal(false);
                 navigate("/ride");
               }}
-              className="absolute top-2 right-4 text-2xl text-gray-500 hover:text-black"
+              className="text-gray-600 border border-gray-300 rounded px-4 py-2 hover:bg-gray-100"
             >
-              &times;
+              Skip
             </button>
-            <h3 className="text-xl font-bold text-center">
-              How was your ride?
-            </h3>
-
-            <div className="flex justify-center space-x-1">
-              {[...Array(5)].map((_, i) => {
-                const starValue = i + 1;
-                return (
-                  <label key={i}>
-                    <input
-                      type="radio"
-                      name="rating"
-                      value={starValue}
-                      className="hidden"
-                      onClick={() => setRating(starValue)}
-                    />
-                    <FaStar
-                      size={30}
-                      color={
-                        starValue <= (hover || rating) ? "#ffc107" : "#e4e5e9"
-                      }
-                      className="cursor-pointer transition"
-                      onMouseEnter={() => setHover(starValue)}
-                      onMouseLeave={() => setHover(null)}
-                    />
-                  </label>
-                );
-              })}
-            </div>
-
-            <textarea
-              rows="4"
-              placeholder="Write your review..."
-              value={reviewText}
-              onChange={(e) => setReviewText(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg p-2"
-            ></textarea>
-
-            <div className="flex justify-end gap-4 mt-4">
-              <button
-                onClick={() => {
-                  setShowReviewModal(false);
-                  navigate("/ride");
-                }}
-                className="text-gray-600 border border-gray-300 rounded px-4 py-2 hover:bg-gray-100"
-              >
-                Skip
-              </button>
-              <button
-                onClick={submitReview}
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-              >
-                Submit
-              </button>
-            </div>
+            <button
+              onClick={submitReview}
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            >
+              Submit
+            </button>
           </div>
         </div>
       )}

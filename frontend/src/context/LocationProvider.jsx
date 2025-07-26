@@ -6,8 +6,8 @@ const LocationContext = createContext();
 const LocationProvider = ({ children }) => {
   const [position, setPosition] = useState([]);
   const [dropLocation, setDropLocation] = useState([]);
-  const [pickUpLocationName, setPickUpLocationName] = useState([]);
-  const [dropLocationName, setDropLocationName] = useState([]);
+  const [pickUpLocationName, setPickUpLocationName] = useState("");
+  const [dropLocationName, setDropLocationName] = useState("");
 
   return (
     <LocationContext.Provider
