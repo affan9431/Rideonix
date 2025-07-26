@@ -34,6 +34,7 @@ import RiderRideHistory from "./pages/RiderRideHistory";
 import DriverPerformance from "./component/DriverPerformance";
 import QRUPIPayment from "./component/QRUPIPayment";
 import { Toaster } from "react-hot-toast";
+import PageNotFound from "./component/PageNoutFound";
 
 function App() {
   return (
@@ -79,7 +80,7 @@ function App() {
                 <Route path="performance" element={<DriverPerformance />} />
               </Route>
             </Route>
-            <Route path="qr-code" element={<QRUPIPayment />} />
+            <Route path="*" element={<PageNotFound />} />
           </Routes>
         </Router>
         <Toaster
