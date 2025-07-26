@@ -98,7 +98,7 @@ export default function WelcomeUpload() {
       localStorage.setItem("driverToken", res.data.token);
       localStorage.setItem("activeRole", "driver");
 
-      navigate("/driver-dashboard");
+      navigate("/driver");
     } catch (err) {
       toast.error("Upload failed. See console.");
       console.error(err);
