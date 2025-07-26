@@ -96,7 +96,6 @@ export default function RideDetailsToDriver() {
     };
 
     socket.emit("ride_finished", requiredData);
-    localStorage.removeItem("rideData");
     setRideCompleted(true);
   };
 
@@ -111,6 +110,7 @@ export default function RideDetailsToDriver() {
     socket.emit("payment_done", {
       riderid: rideData.riderId,
     });
+    localStorage.removeItem("rideData");
   };
 
   if (!rideData) return <div>Loading...</div>;
