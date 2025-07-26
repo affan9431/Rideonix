@@ -116,7 +116,7 @@ export default function DriverOnTheWay() {
 
       const payload = {
         rideId,
-        ride: riderId,
+        rider: riderId,
         review: reviewText,
         rating: rating,
       };
