@@ -12,6 +12,8 @@ function GoogleOTPVerification() {
   const location = useLocation();
   const { driverState, setDriverData } = useOnboarding();
 
+  console.log("driverState:", driverState);
+
   const {
     identifier,
     otp: serverOTP,
