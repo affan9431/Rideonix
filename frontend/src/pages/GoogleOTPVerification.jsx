@@ -65,11 +65,14 @@ function GoogleOTPVerification() {
           username,
           email,
           profilePicture,
+          phoneNumber: identifier,
         }));
 
         localStorage.removeItem("driverState");
         setTimeout(() => {
-          navigate("/location-referral");
+          navigate("/location-referral", {
+            state: {},
+          });
         }, 100);
       } else {
         localStorage.setItem("riderToken", res.data.token);
