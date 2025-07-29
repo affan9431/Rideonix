@@ -11,7 +11,7 @@ function GoogleOTPVerification() {
   const navigate = useNavigate();
   const location = useLocation();
   const { setDriverData } = useOnboarding();
-  const driverState = localStorage.getItem("driverState");
+  const driverState = localStorage.getItem("driverState") === "true";
 
   console.log("driverState:", driverState);
 
