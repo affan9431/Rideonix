@@ -155,19 +155,24 @@ const Navbar = () => {
                   </div>
                 </div>
 
-                <Link
-                  to="/app/rider-profile"
-                  className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded cursor-pointer text-sm"
-                >
-                  <User size={16} /> View Profile
-                </Link>
+                {/* 🔧 MODIFIED: Show rider-only pages only if riderToken exists */}
+                {riderToken && (
+                  <>
+                    <Link
+                      to="/app/rider-profile"
+                      className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded cursor-pointer text-sm"
+                    >
+                      <User size={16} /> View Profile
+                    </Link>
 
-                <Link
-                  to="/app/ride-history"
-                  className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded cursor-pointer text-sm"
-                >
-                  <History size={16} /> Ride History
-                </Link>
+                    <Link
+                      to="/app/ride-history"
+                      className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded cursor-pointer text-sm"
+                    >
+                      <History size={16} /> Ride History
+                    </Link>
+                  </>
+                )}
 
                 <Link
                   to="/app/help"
