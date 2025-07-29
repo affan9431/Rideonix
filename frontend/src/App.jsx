@@ -35,6 +35,8 @@ import DriverPerformance from "./component/DriverPerformance";
 import QRUPIPayment from "./component/QRUPIPayment";
 import { Toaster } from "react-hot-toast";
 import PageNotFound from "./component/PageNoutFound";
+import RegisterPhoneNumber from "./pages/RegisterPhoneNumber";
+import GoogleOTPVerification from "./pages/GoogleOTPVerification";
 
 function App() {
   return (
@@ -52,7 +54,15 @@ function App() {
               <Route path="ride-history" element={<RiderRideHistory />} />
             </Route>
             <Route path="register" element={<Registeration />} />
+            <Route
+              path="registerPhoneNumber"
+              element={<RegisterPhoneNumber />}
+            />
             <Route path="otp-verification" element={<OTPVerification />} />{" "}
+            <Route
+              path="google-otp-verification"
+              element={<GoogleOTPVerification />}
+            />{" "}
             <Route path="register/name" element={<RegisterName />} />
             <Route path="register/email" element={<RegisterEmail />} />
             <Route path="term-and-conditions" element={<TermAndCondition />} />
