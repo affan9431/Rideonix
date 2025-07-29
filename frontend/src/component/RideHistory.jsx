@@ -5,11 +5,14 @@ import axios from "axios";
 import StarRating from "./StarRating";
 import TripDetailModal from "./TripDetailModal";
 import { getTimeOfDay } from "../utils/getTimeOfDay";
+import { jwtDecode } from "jwt-decode";
 
 function RideHistory() {
   const [historyData, setHistoryData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTrip, setSelectedTrip] = useState(null);
+  const driverToken = localStorage.getItem("driverToken");
+  const decoded = driverToken && jwtDecode(driverToken);
 
   const imageMap = {
     morning: "/images/morning.jpg",
@@ -21,7 +24,9 @@ function RideHistory() {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const res = await axios.get("https://rideonix-backend.onrender.com/api/rideHistory");
+        const res = await axios.get(
+          `https://rideonix-backend.onrender.com/api/rideHistory/${decoded.id}?role=driver`
+        );
         setHistoryData(res.data.data);
       } catch (error) {
         console.log("ERROR:", error);

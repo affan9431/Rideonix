@@ -13,16 +13,21 @@ import {
   Loader2,
   XCircle,
 } from "lucide-react";
+import { jwtDecode } from "jwt-decode";
 
 export default function RiderRideHistory() {
   const [rideHistory, setRideHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const riderToken = localStorage.getItem("riderToken");
+  const decoded = riderToken && jwtDecode(riderToken);
 
   useEffect(() => {
     const fetchRideHistory = async () => {
       try {
-        const res = await axios.get("https://rideonix-backend.onrender.com/api/rideHistory");
+        const res = await axios.get(
+          `https://rideonix-backend.onrender.com/api/rideHistory/${decoded.id}?role=rider`
+        );
         if (res.data.status === "success") {
           setRideHistory(res.data.data);
         } else {
