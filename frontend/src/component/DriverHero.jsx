@@ -19,7 +19,6 @@ export default function DriverHero() {
             you need
           </h1>
           <p className="text-gray-300 mb-6">Earn on your own schedule.</p>
-
           <div className="flex flex-col md:flex-row items-center gap-4">
             {riderToken ? (
               <Link to="/location-referral">

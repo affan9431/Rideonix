@@ -10,7 +10,8 @@ function GoogleOTPVerification() {
   const inputsRef = useRef([]);
   const navigate = useNavigate();
   const location = useLocation();
-  const { driverState, setDriverData } = useOnboarding();
+  const { setDriverData } = useOnboarding();
+  const driverState = localStorage.getItem("driverState");
 
   console.log("driverState:", driverState);
 
@@ -65,6 +66,8 @@ function GoogleOTPVerification() {
           email,
           profilePicture,
         }));
+
+        localStorage.removeItem("driverState");
         setTimeout(() => {
           navigate("/location-referral");
         }, 100);

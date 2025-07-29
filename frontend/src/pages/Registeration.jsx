@@ -2,10 +2,12 @@ import { useState } from "react";
 import { FaGoogle, FaGithub, FaQrcode } from "react-icons/fa";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { useOnboarding } from "../context/OnboardingProvider";
 
 const Registeration = () => {
   const [identifier, setIdentifier] = useState("");
   const navigate = useNavigate();
+  const { driverState } = useOnboarding();
 
   const handleSubmit = async () => {
     const res = await axios.post(
@@ -53,6 +55,9 @@ const Registeration = () => {
 
         {/* Google Button */}
         <Link
+          onClick={() =>
+            driverState === true && localStorage.setItem("driverState", true)
+          }
           to="https://rideonix-backend.onrender.com/auth/google"
           className="w-full flex items-center justify-center gap-3 bg-gray-100 py-3 rounded-md hover:bg-gray-200 transition"
         >
