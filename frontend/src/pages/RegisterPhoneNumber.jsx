@@ -3,6 +3,7 @@ import { jwtDecode } from "jwt-decode";
 import React from "react";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function RegisterPhoneNumber() {
   const [identifier, setIdentifier] = useState("");
@@ -13,23 +14,34 @@ function RegisterPhoneNumber() {
   const decoded = token && jwtDecode(token);
 
   const handleSubmit = async () => {
-    const res = await axios.post(
-      "https://rideonix-backend.onrender.com/api/auth/send-otp",
-      {
-        identifier,
+    try {
+      if (identifier === "") {
+        toast.error("Please enter Phone number.");
+        return;
       }
-    );
+      
+      const res = await axios.post(
+        "https://rideonix-backend.onrender.com/api/auth/send-otp",
+        {
+          identifier,
+        }
+      );
 
-    navigate("/google-otp-verification", {
-      state: {
-        otp: res.data.otp,
-        identifier,
-        username: decoded.username,
-        email: decoded.email,
-        profilePicture: decoded.profilePicture,
-      },
-    });
+      navigate("/google-otp-verification", {
+        state: {
+          otp: res.data.otp,
+          identifier,
+          username: decoded.username,
+          email: decoded.email,
+          profilePicture: decoded.profilePicture,
+        },
+      });
+    } catch (error) {
+      toast.error("Something went wrong");
+      console.log("ERROR:", error);
+    }
   };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-white px-4">
       <div className="max-w-md w-full space-y-6">

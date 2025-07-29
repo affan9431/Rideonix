@@ -3,12 +3,15 @@ import { useLocation, useNavigate } from "react-router-dom";
 import PrevNextButton from "../component/PrevNextButton";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useOnboarding } from "../context/OnboardingProvider";
 
 function GoogleOTPVerification() {
   const [otp, setOtp] = useState(["", "", "", ""]);
   const inputsRef = useRef([]);
   const navigate = useNavigate();
   const location = useLocation();
+  const { driverState, setDriverData } = useOnboarding();
+
   const {
     identifier,
     otp: serverOTP,
@@ -33,6 +36,7 @@ function GoogleOTPVerification() {
           username,
           email,
           profilePicture,
+          driverState,
         }
       );
 
@@ -51,8 +55,22 @@ function GoogleOTPVerification() {
         navigate("/register");
       }
 
-      localStorage.setItem("riderToken", res.data.token);
-      navigate("/ride");
+      // TODO: Update code for driver flow as well
+      if (driverState === true) {
+        setDriverData((prev) => ({
+          ...prev,
+          username,
+          email,
+          profilePicture,
+        }));
+        setTimeout(() => {
+          navigate("/location-referral");
+        }, 100);
+      } else {
+        localStorage.setItem("riderToken", res.data.token);
+        localStorage.setItem("activeRole", "rider");
+        navigate("/ride");
+      }
     } catch (error) {
       // Show backend error message if available
       const msg =
