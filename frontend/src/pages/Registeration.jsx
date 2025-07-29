@@ -1,16 +1,19 @@
 import { useState } from "react";
 import { FaGoogle, FaGithub, FaQrcode } from "react-icons/fa";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Registeration = () => {
   const [identifier, setIdentifier] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
-    const res = await axios.post("https://rideonix-backend.onrender.com/api/auth/send-otp", {
-      identifier,
-    });
+    const res = await axios.post(
+      "https://rideonix-backend.onrender.com/api/auth/send-otp",
+      {
+        identifier,
+      }
+    );
 
     navigate("/otp-verification", {
       state: {
@@ -49,31 +52,14 @@ const Registeration = () => {
         </div>
 
         {/* Google Button */}
-        <button className="w-full flex items-center justify-center gap-3 bg-gray-100 py-3 rounded-md hover:bg-gray-200 transition">
+        <Link
+          to="https://rideonix-backend.onrender.com/auth/google"
+          className="w-full flex items-center justify-center gap-3 bg-gray-100 py-3 rounded-md hover:bg-gray-200 transition"
+        >
           <FaGoogle size={18} />
           Continue with Google
-        </button>
+        </Link>
 
-        {/* GitHub Button */}
-        <button className="w-full flex items-center justify-center gap-3 bg-gray-100 py-3 rounded-md hover:bg-gray-200 transition">
-          <FaGithub size={18} />
-          Continue with GitHub
-        </button>
-
-        {/* Divider */}
-        <div className="flex items-center gap-2">
-          <div className="flex-1 h-px bg-gray-300" />
-          <span className="text-sm text-gray-500">or</span>
-          <div className="flex-1 h-px bg-gray-300" />
-        </div>
-
-        {/* QR Code Login */}
-        <button className="w-full flex items-center justify-center gap-3 bg-gray-100 py-3 rounded-md hover:bg-gray-200 transition">
-          <FaQrcode size={18} />
-          Log in with QR code
-        </button>
-
-        {/* Consent Text */}
         <p className="text-xs text-gray-500 text-center pt-4">
           By proceeding, you consent to get calls, WhatsApp or SMS/RCS messages,
           including by automated means, from Rideonix and its affiliates to the
