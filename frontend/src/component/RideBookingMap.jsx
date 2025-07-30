@@ -28,8 +28,6 @@ const redIcon = new L.Icon({
 export default function RideBookingMap() {
   const { position, dropLocation, setPosition } = useLocation();
 
-
-
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -70,7 +68,7 @@ export default function RideBookingMap() {
             scrollWheelZoom={true}
             enableHighAccuracy
             getCurrentPosition={true}
-            className="h-[600px] w-full"
+            className="h-[600px] w-full z-0"
           >
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'

@@ -5,6 +5,7 @@ import AvatarPage from "./Avatar";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import getRiderInfo from "../utils/getRiderData";
+import { HelpCircle, History, LogOut, User } from "lucide-react";
 
 export default function UberNavbar() {
   const riderToken = localStorage.getItem("riderToken");
@@ -34,14 +35,18 @@ export default function UberNavbar() {
     <div className="w-full shadow-md bg-white">
       <div className="flex items-center justify-between px-4 py-3 md:px-6">
         {/* Logo */}
-        <span className="text-2xl md:text-3xl font-semibold">Rideonix</span>
+        <Link to='/app/home'>
+          <span className="text-2xl md:text-3xl font-semibold">Rideonix</span>
+        </Link>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-10">
           <div className="flex items-center space-x-6 text-sm font-medium text-black">
             <div className="flex items-center space-x-1">
               <FaCar />
-              <span>Ride</span>
+              <Link to="/ride/location">
+                <span>Ride</span>
+              </Link>
             </div>
           </div>
         </div>
@@ -69,30 +74,30 @@ export default function UberNavbar() {
               <div className="absolute right-0 top-full mt-2 w-48 bg-white text-black rounded-lg shadow-lg z-50 py-2">
                 <Link
                   to="/app/rider-profile"
-                  className="block px-4 py-2 hover:bg-gray-100 text-sm"
+                  className="flex gap-3 px-4 py-2 hover:bg-gray-100 text-sm "
                 >
-                  Profile
+                  <User size={16} /> View Profile
                 </Link>
                 <Link
                   to="/app/ride-history"
-                  className="block px-4 py-2 hover:bg-gray-100 text-sm"
+                  className="flex gap-3 px-4 py-2 hover:bg-gray-100 text-sm"
                 >
-                  Ride History
+                  <History size={16} /> Ride History
                 </Link>
                 <Link
                   to="/app/help"
-                  className="block px-4 py-2 hover:bg-gray-100 text-sm"
+                  className="flex gap-3 px-4 py-2 hover:bg-gray-100 text-sm"
                 >
-                  Help Center
+                  <HelpCircle size={16} /> Help Center
                 </Link>
                 <div
                   onClick={() => {
                     localStorage.clear();
                     window.location.href = "/";
                   }}
-                  className="block px-4 py-2 hover:bg-red-100 text-red-600 cursor-pointer text-sm"
+                  className="flex gap-3 px-4 py-2 hover:bg-red-100 text-red-600 cursor-pointer text-sm"
                 >
-                  Sign Out
+                  <LogOut size={16} /> Sign Out
                 </div>
               </div>
             )}
