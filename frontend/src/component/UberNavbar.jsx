@@ -9,15 +9,27 @@ import getRiderInfo from "../utils/getRiderData";
 export default function UberNavbar() {
   const riderToken = localStorage.getItem("riderToken");
   const [profileImage, setProfileImage] = useState(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       const riderData = riderToken && (await getRiderInfo());
-
       setProfileImage(riderData?.profilePicture);
     };
     fetchData();
   }, [riderToken]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest(".profile-dropdown")) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <div className="w-full shadow-md bg-white">
       <div className="flex items-center justify-between px-4 py-3 md:px-6">
@@ -34,7 +46,7 @@ export default function UberNavbar() {
           </div>
         </div>
 
-        {/* Right Section (Activity + Avatar) */}
+        {/* Right Section */}
         <div className="flex items-center space-x-3 md:space-x-4">
           <Link
             to="/app/ride-history"
@@ -44,16 +56,51 @@ export default function UberNavbar() {
             <span>Activity</span>
           </Link>
 
-          <div className="flex items-center space-x-1">
+          <div
+            className="relative flex items-center space-x-1 cursor-pointer profile-dropdown"
+            onClick={() => setDropdownOpen(!dropdownOpen)}
+          >
             <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
               {riderToken && <AvatarPage image={profileImage} />}
             </div>
             <MdKeyboardArrowDown className="text-xl hidden sm:inline" />
+
+            {dropdownOpen && (
+              <div className="absolute right-0 top-full mt-2 w-48 bg-white text-black rounded-lg shadow-lg z-50 py-2">
+                <Link
+                  to="/app/rider-profile"
+                  className="block px-4 py-2 hover:bg-gray-100 text-sm"
+                >
+                  Profile
+                </Link>
+                <Link
+                  to="/app/ride-history"
+                  className="block px-4 py-2 hover:bg-gray-100 text-sm"
+                >
+                  Ride History
+                </Link>
+                <Link
+                  to="/app/help"
+                  className="block px-4 py-2 hover:bg-gray-100 text-sm"
+                >
+                  Help Center
+                </Link>
+                <div
+                  onClick={() => {
+                    localStorage.clear();
+                    window.location.href = "/";
+                  }}
+                  className="block px-4 py-2 hover:bg-red-100 text-red-600 cursor-pointer text-sm"
+                >
+                  Sign Out
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Mobile Bottom Menu (Optional) */}
+      {/* Mobile Bottom Menu */}
       <div className="md:hidden px-4 pb-2 pt-1">
         <div className="flex items-center justify-around text-sm font-medium text-black">
           <div className="flex flex-col items-center">
