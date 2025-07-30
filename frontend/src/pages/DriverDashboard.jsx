@@ -79,6 +79,31 @@ export default function UberDashboard() {
     }
   };
 
+  const retryGeolocation = () => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const coords = [position.coords.latitude, position.coords.longitude];
+        setPosition(coords);
+        getCityName(coords[0], coords[1]);
+
+        socket.emit("driverLocationUpdate", {
+          driverId: driverInfo.driverId,
+          location: { lat: coords[0], lon: coords[1] },
+        });
+
+        setPermissionDenied(false); // close modal if successful
+      },
+      (err) => {
+        console.error("Retry failed:", err.message);
+        toast.error("Still can’t access your location. Check settings.");
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 5000,
+      }
+    );
+  };
+
   useEffect(() => {
     if (!navigator.geolocation) {
       toast.error("Geolocation is not supported by your browser");
@@ -98,40 +123,60 @@ export default function UberDashboard() {
       },
       (error) => {
         if (error.code === error.PERMISSION_DENIED) {
-          // Show confirm popup
-          const confirmDeny = window.confirm(
-            "We need your location to locate you on the map. Do you really want to deny access?"
-          );
+          // Check if permission is permanently denied
+          if (navigator.permissions) {
+            navigator.permissions
+              .query({ name: "geolocation" })
+              .then((result) => {
+                if (result.state === "denied") {
+                  alert(
+                    "You’ve previously blocked location access. To use this feature, please enable location in your browser settings."
+                  );
+                  setPermissionDenied(true); // trigger fallback UI
+                } else {
+                  // Not permanently blocked, show confirmation dialog
+                  const confirmDeny = window.confirm(
+                    "We need your location to locate you on the map. Do you really want to deny access?"
+                  );
 
-          if (confirmDeny) {
-            setPermissionDenied(true);
+                  if (confirmDeny) {
+                    setPermissionDenied(true);
+                  } else {
+                    // Retry geolocation
+                    navigator.geolocation.watchPosition(
+                      (position) => {
+                        const coords = [
+                          position.coords.latitude,
+                          position.coords.longitude,
+                        ];
+                        setPosition(coords);
+                        getCityName(coords[0], coords[1]);
+
+                        socket.emit("driverLocationUpdate", {
+                          driverId: driverInfo.driverId,
+                          location: { lat: coords[0], lon: coords[1] },
+                        });
+                      },
+                      (err) => console.error("Retry failed:", err),
+                      {
+                        enableHighAccuracy: true,
+                        maximumAge: 10000,
+                        timeout: 5000,
+                      }
+                    );
+                  }
+                }
+              });
           } else {
-            setPermissionDenied(false);
-            // Retry geolocation request
-            navigator.geolocation.watchPosition(
-              (position) => {
-                const coords = [
-                  position.coords.latitude,
-                  position.coords.longitude,
-                ];
-                setPosition(coords);
-                getCityName(coords[0], coords[1]);
-
-                socket.emit("driverLocationUpdate", {
-                  driverId: driverInfo.driverId,
-                  location: { lat: coords[0], lon: coords[1] },
-                });
-              },
-              (err) => console.error("Retry failed:", err),
-              {
-                enableHighAccuracy: true,
-                maximumAge: 10000,
-                timeout: 5000,
-              }
+            // permissions API not available (older browsers), fallback
+            alert(
+              "Location permission denied. Please enable it in your browser settings to use this feature."
             );
+            setPermissionDenied(true);
           }
         } else {
           console.error("Geolocation error:", error.message);
+          toast.error("Unable to retrieve location. Try again later.");
         }
       },
       {
@@ -293,6 +338,14 @@ export default function UberDashboard() {
           driverInfo={driverInfo}
           setIncomingRide={setIncomingRide}
           setShowRidePopup={setShowRidePopup}
+        />
+      )}
+
+      {permissionDenied && (
+        <LocationPermissionModal
+          open={permissionDenied}
+          onClose={() => setPermissionDenied(false)}
+          onRetry={retryGeolocation}
         />
       )}
     </div>
