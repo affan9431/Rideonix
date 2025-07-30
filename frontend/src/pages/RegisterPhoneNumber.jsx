@@ -19,7 +19,13 @@ function RegisterPhoneNumber() {
         toast.error("Please enter Phone number.");
         return;
       }
-      
+
+      const phoneRegex = /^\+?[0-9]{7,15}$/;
+
+      if (!phoneRegex.test(identifier)) {
+        toast.error("Enter a valid phone number bro 💀");
+      }
+
       const res = await axios.post(
         "https://rideonix-backend.onrender.com/api/auth/send-otp",
         {
@@ -46,12 +52,12 @@ function RegisterPhoneNumber() {
     <div className="min-h-screen flex items-center justify-center bg-white px-4">
       <div className="max-w-md w-full space-y-6">
         <h2 className="text-2xl font-semibold text-black">
-          What's your phone number or email?
+          What's your phone number?
         </h2>
 
         <input
           type="text"
-          placeholder="Enter phone number or email"
+          placeholder="Enter phone number here"
           value={identifier}
           onChange={(e) => setIdentifier(e.target.value)}
           className="w-full px-4 py-3 rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black"

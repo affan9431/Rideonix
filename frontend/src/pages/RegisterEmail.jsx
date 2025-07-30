@@ -5,7 +5,6 @@ import { useLocation } from "react-router-dom";
 import { useOnboarding } from "../context/OnboardingProvider";
 import toast from "react-hot-toast";
 
-
 function RegisterEmail() {
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
@@ -16,6 +15,12 @@ function RegisterEmail() {
   const handleNext = () => {
     if (!email.trim()) {
       toast.error("Please enter your email address.");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast.error("Enter a valid email bro 💀");
       return;
     }
 
