@@ -38,6 +38,7 @@ export default function UberDashboard() {
   const [position, setPosition] = useState([]);
   const [incomingRide, setIncomingRide] = useState(null);
   const [showRidePopup, setShowRidePopup] = useState(false);
+  const [permissionDenied, setPermissionDenied] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const hideMapRoutes = ["/driver/profile", "/driver/performance"];
@@ -79,26 +80,70 @@ export default function UberDashboard() {
   };
 
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.watchPosition(
-        (position) => {
-          const cords = [position.coords.latitude, position.coords.longitude];
-          setPosition(cords);
-          getCityName(cords[0], cords[1]);
-
-          socket.emit("driverLocationUpdate", {
-            driverId: driverInfo.driverId,
-            location: { lat: cords[0], lon: cords[1] },
-          });
-        },
-        (error) => console.error(error),
-        {
-          enableHighAccuracy: true,
-          maximumAge: 10000,
-          timeout: 5000,
-        }
-      );
+    if (!navigator.geolocation) {
+      toast.error("Geolocation is not supported by your browser");
+      return;
     }
+
+    const watchId = navigator.geolocation.watchPosition(
+      (position) => {
+        const coords = [position.coords.latitude, position.coords.longitude];
+        setPosition(coords);
+        getCityName(coords[0], coords[1]);
+
+        socket.emit("driverLocationUpdate", {
+          driverId: driverInfo.driverId,
+          location: { lat: coords[0], lon: coords[1] },
+        });
+      },
+      (error) => {
+        if (error.code === error.PERMISSION_DENIED) {
+          // Show confirm popup
+          const confirmDeny = window.confirm(
+            "We need your location to locate you on the map. Do you really want to deny access?"
+          );
+
+          if (confirmDeny) {
+            setPermissionDenied(true);
+          } else {
+            setPermissionDenied(false);
+            // Retry geolocation request
+            navigator.geolocation.watchPosition(
+              (position) => {
+                const coords = [
+                  position.coords.latitude,
+                  position.coords.longitude,
+                ];
+                setPosition(coords);
+                getCityName(coords[0], coords[1]);
+
+                socket.emit("driverLocationUpdate", {
+                  driverId: driverInfo.driverId,
+                  location: { lat: coords[0], lon: coords[1] },
+                });
+              },
+              (err) => console.error("Retry failed:", err),
+              {
+                enableHighAccuracy: true,
+                maximumAge: 10000,
+                timeout: 5000,
+              }
+            );
+          }
+        } else {
+          console.error("Geolocation error:", error.message);
+        }
+      },
+      {
+        enableHighAccuracy: true,
+        maximumAge: 10000,
+        timeout: 5000,
+      }
+    );
+
+    return () => {
+      navigator.geolocation.clearWatch(watchId);
+    };
   }, [driverInfo]);
 
   useEffect(() => {
@@ -213,7 +258,7 @@ export default function UberDashboard() {
             </div>
 
             {/* Map Container Box */}
-            {!shouldHideMap && (
+            {!shouldHideMap && !permissionDenied && (
               <div className="flex-1 h-[300px] lg:h-[400px] rounded-xl overflow-hidden shadow-md">
                 {position.length > 0 && (
                   <MapContainer
