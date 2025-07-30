@@ -21,6 +21,7 @@ const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeRole, setActiveRole] = useState(storedRole);
+  
   useEffect(() => {
     const fetchData = async () => {
       const driverData = driverToken && (await getDriverInfo());

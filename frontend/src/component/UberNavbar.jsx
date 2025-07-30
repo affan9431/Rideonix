@@ -3,10 +3,21 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import { BsFillBookmarkFill } from "react-icons/bs";
 import AvatarPage from "./Avatar";
 import { Link } from "react-router-dom";
-
-const riderToken = localStorage.getItem("riderToken");
+import { useEffect, useState } from "react";
+import getRiderInfo from "../utils/getRiderData";
 
 export default function UberNavbar() {
+  const riderToken = localStorage.getItem("riderToken");
+  const [profileImage, setProfileImage] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const riderData = riderToken && (await getRiderInfo());
+
+      setProfileImage(riderData?.profilePicture);
+    };
+    fetchData();
+  }, [riderToken]);
   return (
     <div className="w-full shadow-md bg-white">
       <div className="flex items-center justify-between px-4 py-3 md:px-6">
@@ -35,7 +46,7 @@ export default function UberNavbar() {
 
           <div className="flex items-center space-x-1">
             <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
-              {riderToken && <AvatarPage />}
+              {riderToken && <AvatarPage image={profileImage} />}
             </div>
             <MdKeyboardArrowDown className="text-xl hidden sm:inline" />
           </div>
