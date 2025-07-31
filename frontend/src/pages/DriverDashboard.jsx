@@ -346,6 +346,7 @@ export default function UberDashboard() {
           open={permissionDenied}
           onClose={() => setPermissionDenied(false)}
           onRetry={retryGeolocation}
+          text="riders"
         />
       )}
     </div>

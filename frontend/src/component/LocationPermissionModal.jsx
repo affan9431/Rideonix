@@ -2,7 +2,12 @@ import React from "react";
 import { Dialog } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
-export default function LocationPermissionModal({ open, onRetry, onClose }) {
+export default function LocationPermissionModal({
+  open,
+  onRetry,
+  onClose,
+  text,
+}) {
   return (
     <Dialog open={open} onClose={onClose} className="relative z-50">
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
@@ -15,7 +20,8 @@ export default function LocationPermissionModal({ open, onRetry, onClose }) {
             </Dialog.Title>
           </div>
           <Dialog.Description className="text-sm text-gray-600">
-            We need your location to locate you on the map and match you with nearby riders. You may have previously denied location access.
+            We need your location to locate you on the map and match you with
+            nearby {text}. You may have previously denied location access.
           </Dialog.Description>
 
           <ul className="text-sm text-gray-500 list-disc pl-5">

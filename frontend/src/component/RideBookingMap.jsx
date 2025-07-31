@@ -169,6 +169,7 @@ export default function RideBookingMap() {
           open={isLocationBlocked}
           onClose={() => setIsLocationBlocked(false)}
           onRetry={retryGeolocation}
+          text="drivers"
         />
       )}
     </div>
