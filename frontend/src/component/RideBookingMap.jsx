@@ -14,6 +14,7 @@ import useLocation from "../hooks/useLocation";
 import { jwtDecode } from "jwt-decode";
 import { socket } from "../service/socket.io";
 import toast from "react-hot-toast";
+import LocationPermissionModal from "./LocationPermissionModal";
 
 const redIcon = new L.Icon({
   iconUrl:
