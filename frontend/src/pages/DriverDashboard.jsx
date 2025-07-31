@@ -80,7 +80,7 @@ export default function UberDashboard() {
   };
 
   const retryGeolocation = () => {
-    navigator.geolocation.getCurrentPosition(
+    navigator.geolocation.watchPosition(
       (position) => {
         const coords = [position.coords.latitude, position.coords.longitude];
         setPosition(coords);

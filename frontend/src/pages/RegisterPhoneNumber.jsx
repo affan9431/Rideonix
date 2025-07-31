@@ -24,6 +24,7 @@ function RegisterPhoneNumber() {
 
       if (!phoneRegex.test(identifier)) {
         toast.error("Enter a valid phone number bro 💀");
+        return;
       }
 
       const res = await axios.post(

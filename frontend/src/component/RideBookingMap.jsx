@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   MapContainer,
   Marker,
@@ -13,6 +13,7 @@ import { Outlet } from "react-router-dom";
 import useLocation from "../hooks/useLocation";
 import { jwtDecode } from "jwt-decode";
 import { socket } from "../service/socket.io";
+import toast from "react-hot-toast";
 
 const redIcon = new L.Icon({
   iconUrl:
@@ -27,23 +28,96 @@ const redIcon = new L.Icon({
 
 export default function RideBookingMap() {
   const { position, dropLocation, setPosition } = useLocation();
+  const [isLocationBlocked, setIsLocationBlocked] = useState(false);
 
   useEffect(() => {
+    let watchId;
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const latitude = position.coords.latitude;
           const longitude = position.coords.longitude;
           setPosition([latitude, longitude]);
+          setIsLocationBlocked(false); // User allowed location
         },
         (err) => {
           console.error(err);
+          if (err.code === 1) {
+            if (navigator.permissions) {
+              navigator.permissions
+                .query({ name: "geolocation" })
+                .then((result) => {
+                  if (result.state === "denied") {
+                    alert(
+                      "You’ve previously blocked location access. To use this feature, please enable location in your browser settings."
+                    );
+                    setIsLocationBlocked(true); // trigger fallback UI
+                  } else {
+                    // Not permanently blocked, show confirmation dialog
+                    const confirmDeny = window.confirm(
+                      "We need your location to locate you on the map. Do you really want to deny access?"
+                    );
+
+                    if (confirmDeny) {
+                      setIsLocationBlocked(true);
+                    } else {
+                      // Retry geolocation
+                      navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                          const latitude = position.coords.latitude;
+                          const longitude = position.coords.longitude;
+                          setPosition([latitude, longitude]);
+                          setIsLocationBlocked(false);
+                        },
+                        (err) => console.error("Retry failed:", err),
+                        {
+                          enableHighAccuracy: true,
+                          maximumAge: 10000,
+                          timeout: 5000,
+                        }
+                      );
+                    }
+                  }
+                });
+            } else {
+              // permissions API not available (older browsers), fallback
+              alert(
+                "Location permission denied. Please enable it in your browser settings to use this feature."
+              );
+              setIsLocationBlocked(true);
+            }
+          }
         },
-        { enableHighAccuracy: true }
+        { enableHighAccuracy: true, maximumAge: 10000, timeout: 5000 }
       );
+    } else {
+      console.warn("Geolocation is not supported by this browser.");
     }
-  }, [setPosition]);
-  // emit here "register_rider"
+
+    return () => {
+      if (watchId) navigator.geolocation.clearWatch(watchId);
+    };
+  }, [setPosition, setIsLocationBlocked]);
+
+  const retryGeolocation = () => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        setPosition([latitude, longitude]);
+        setIsLocationBlocked(false);
+      },
+      (err) => {
+        console.error("Retry failed:", err.message);
+        toast.error("Still can’t access your location. Check settings.");
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 5000,
+      }
+    );
+  };
 
   useEffect(() => {
     const riderToken = localStorage.getItem("riderToken");
@@ -89,6 +163,13 @@ export default function RideBookingMap() {
           </MapContainer>
         )}
       </div>
+      {isLocationBlocked && (
+        <LocationPermissionModal
+          open={isLocationBlocked}
+          onClose={() => setIsLocationBlocked(false)}
+          onRetry={retryGeolocation}
+        />
+      )}
     </div>
   );
 }
