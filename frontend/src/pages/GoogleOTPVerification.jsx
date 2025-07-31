@@ -13,8 +13,6 @@ function GoogleOTPVerification() {
   const { setDriverData } = useOnboarding();
   const driverState = localStorage.getItem("driverState") === "true";
 
-  console.log("driverState:", driverState);
-
   const {
     identifier,
     otp: serverOTP,

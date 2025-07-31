@@ -50,7 +50,7 @@ export default function RideBookingMap() {
                 .query({ name: "geolocation" })
                 .then((result) => {
                   if (result.state === "denied") {
-                    alert(
+                    toast.error(
                       "You’ve previously blocked location access. To use this feature, please enable location in your browser settings."
                     );
                     setIsLocationBlocked(true); // trigger fallback UI
@@ -83,7 +83,7 @@ export default function RideBookingMap() {
                 });
             } else {
               // permissions API not available (older browsers), fallback
-              alert(
+              toast.error(
                 "Location permission denied. Please enable it in your browser settings to use this feature."
               );
               setIsLocationBlocked(true);
@@ -94,6 +94,7 @@ export default function RideBookingMap() {
       );
     } else {
       console.warn("Geolocation is not supported by this browser.");
+      toast.error("Geolocation is not supported by this browser.");
     }
 
     return () => {

@@ -6,6 +6,7 @@ export default function LocationReferral() {
   const { driverData, setDriverData } = useOnboarding();
   const navigate = useNavigate();
 
+  // TODO: Get city name and show on input box.
   React.useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(

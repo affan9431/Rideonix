@@ -65,7 +65,6 @@ export default function UberDashboard() {
       );
 
       const data = await response.json();
-      console.log(data);
       setAddress({
         cityName:
           data.address?.city ||
@@ -129,12 +128,11 @@ export default function UberDashboard() {
               .query({ name: "geolocation" })
               .then((result) => {
                 if (result.state === "denied") {
-                  alert(
+                  toast.error(
                     "You’ve previously blocked location access. To use this feature, please enable location in your browser settings."
                   );
-                  setPermissionDenied(true); // trigger fallback UI
+                  setPermissionDenied(true); 
                 } else {
-                  // Not permanently blocked, show confirmation dialog
                   const confirmDeny = window.confirm(
                     "We need your location to locate you on the map. Do you really want to deny access?"
                   );
@@ -142,7 +140,6 @@ export default function UberDashboard() {
                   if (confirmDeny) {
                     setPermissionDenied(true);
                   } else {
-                    // Retry geolocation
                     navigator.geolocation.watchPosition(
                       (position) => {
                         const coords = [
@@ -169,7 +166,7 @@ export default function UberDashboard() {
               });
           } else {
             // permissions API not available (older browsers), fallback
-            alert(
+            toast.error(
               "Location permission denied. Please enable it in your browser settings to use this feature."
             );
             setPermissionDenied(true);

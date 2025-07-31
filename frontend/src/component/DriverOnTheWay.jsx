@@ -77,7 +77,6 @@ export default function DriverOnTheWay() {
 
   useEffect(() => {
     socket.on("ride_finished_on_rider", (data) => {
-      console.log(data);
       localStorage.removeItem("driverData");
       localStorage.removeItem("OTP");
       setRideId(data.rideId);
@@ -120,8 +119,6 @@ export default function DriverOnTheWay() {
         review: reviewText,
         rating: rating,
       };
-
-      console.log(payload);
 
       await axios.post(
         "https://rideonix-backend.onrender.com/api/review",

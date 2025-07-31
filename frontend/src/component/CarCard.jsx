@@ -26,8 +26,6 @@ function CarCard() {
     fetchData();
   }, [driverToken]);
 
-  console.log("From card:", driverData);
-
   const selectedVehicle = driverData?.selectedVehicle
     ?.replace(/[\u{1F300}-\u{1FAFF}]/gu, "")
     .trim();
